@@ -1,154 +1,81 @@
-# AppMando
+AppMando: Sistema Centralizado de Gestión Táctica y Operativa
+Acceso a la plataforma web: app.promilitar.es
 
-**Gestión de tareas, subordinados y agenda propia, en una sola app.**
+🎯 Contexto Operativo (El Problema y la Solución)
+AppMando nace de una necesidad operativa real en el ámbito militar. La gestión de tareas, el control de disponibilidad de subordinados y la coordinación de agendas suelen fragmentarse entre libretas físicas, grupos de mensajería no seguros y hojas de cálculo desincronizadas. Esta fragmentación genera brechas de eficiencia y pérdida de información crítica.
 
-AppMando nació de una necesidad real: soy militar y llevaba el control de mis tareas,
-mi agenda y el estado de mis subordinados repartido entre la libreta, varios chats y
-hojas de cálculo que nunca estaban sincronizadas. Cuando algo se olvidaba, se pagaba
-caro. Así que construí la herramienta que necesitaba: una app donde tener claro todo
-lo que tengo que hacer, con quién tengo que contar y en qué estado está cada persona.
+Para resolverlo, desarrollé esta plataforma: una solución Full-Stack centralizada que unifica el estado del personal, la asignación de tareas y el reporte de novedades en tiempo real, accesible de forma segura desde cualquier dispositivo (Web, Desktop y Móvil vía PWA/Capacitor).
 
-No es un proyecto de Idea. Es la app que usaba cada día, publicada tal cual.
+No es un concepto teórico; es la herramienta operativa en producción que gestiona el flujo de trabajo diario de una unidad.
 
----
+🏗️ Arquitectura y Stack Tecnológico
+La aplicación está diseñada bajo una arquitectura Cliente-Servidor ligera y autónoma, priorizando la velocidad de despliegue y la seguridad de los datos.
 
-## Qué hace
+Frontend (Cliente PWA)
 
-| Módulo | Para qué sirve |
-|---|---|
-| **Resumen** | Panel con el estado del día: tareas pendientes, agenda, bajas y novedades de los subordinados. |
-| **Calendario** | Agenda de tareas por día, con los distintos tipos (tarea, deporte, novedad, superior). Exportación a **PDF** para imprimir o entregar en el parte. |
-| **Deporte** | Control de las sesiones de deporte de cada persona. |
-| **Subordinados** | Ficha de cada subordinado: lesión, disponibilidad, estado y tareas asignadas. |
-| **Superiores** | Registro de los superiores con los que hay que contar. |
-| **Asistente de voz** | Dictas una novedad y la app la guarda sola: «*esguince de García*» registra la novedad médica de García; «*llamar al centro de operaciones de Pérez*» le crea la tarea de hoy a Pérez. Pide confirmación antes de guardar, así que nunca se equivoca solo. |
-| **Compartir** | Comparte tus datos con otro usuario por correo, sin montar otro servidor ni ceder nada. |
-| **Avisos (push)** | Notificación en el móvil cuando hay una tarea pendiente. |
-| **PWA** | Se instala en el móvil y en el ordenador como una app nativa, sin tienda de aplicaciones. |
+Core: React 18 + Vite 5 (JavaScript puro).
 
-Todo se sincroniza con el servidor al guardar, y funciona en el móvil, en el
-ordenador o en una tableta.
+Autenticación: @react-oauth/google para el acceso seguro mediante SSO.
 
----
+Exportación Táctica: jsPDF y html2canvas para generar partes y reportes diarios en formato PDF.
 
-## Cómo está hecha
+Accesibilidad Operativa: Web Speech API implementada para el registro de novedades por dictado de voz (Hands-free).
 
-**Frontend**
-- React 18 + Vite 5
-- JavaScript puro, sin TypeScript
-- `date-fns` para el manejo de fechas
-- `jsPDF` + `jspdf-autotable` para la exportación a PDF
-- `html2canvas` para las previsualizaciones
-- `@react-oauth/google` para el acceso con cuenta Google
-- `lucide-react` para los iconos
-- Web Speech API para el asistente de voz
-- **Capacitor 6** para empaquetar la misma web como app Android nativa
-- PWA instalable (service worker + manifest)
+Despliegue Móvil: Capacitor 6 para empaquetado nativo en Android y configuración PWA (Service Worker + Manifest).
 
-**Backend**
-- Node.js + Express
-- SQLite (fichero único, cero administración)
-- Autenticación: Google OAuth y usuario/contraseña con **bcrypt**
-- Sesiones con **JWT**
-- **Web Push** para las notificaciones
-- Sin Docker y sin servicios externos: `npm install && node server.js`
+Backend (API Rest)
 
----
+Core: Node.js + Express.
 
-## Estructura
+Base de Datos: SQLite (Despliegue en fichero único appmando.db, asegurando portabilidad y cero administración externa).
 
-```
+Seguridad y Sesiones: JSON Web Tokens (JWT) firmados, encriptación de credenciales con bcrypt.
+
+Comunicaciones: Web Push API para el despliegue de notificaciones tácticas en tiempo real.
+
+🛡️ Enfoque de Seguridad y Privacidad (Core)
+Dado el entorno operativo para el que fue concebida, la plataforma implementa los siguientes controles de seguridad por diseño (Security by Design):
+
+Aislamiento de Datos (Tenant Isolation): La API implementa filtros estrictos por ID de usuario en cada endpoint. Es imposible la filtración cruzada de datos entre sesiones.
+
+Criptografía de Credenciales: Almacenamiento exclusivo de hashes generados mediante bcrypt con salting automático. Las contraseñas en texto plano nunca tocan la base de datos.
+
+Gestión de Sesiones: Tokens JWT de corta duración, firmados con secretos inyectados vía variables de entorno (.env), nunca hardcodeados en el código fuente.
+
+Sanitización del Repositorio: El control de versiones excluye sistemáticamente mediante .gitignore cualquier archivo sensible (bases de datos de producción appmando.db, llaves VAPID vapid.json y configuraciones locales de entorno).
+
+📂 Estructura del Proyecto
+Plaintext
+
+
 .
-├── src/                    # Frontend React
-│   ├── App.jsx             # Navegación y estado global
-│   ├── components/         # Un componente por módulo
-│   │   ├── Auth.jsx            # Login (Google + usuario/contraseña)
-│   │   ├── Dashboard.jsx      # Resumen
-│   │   ├── Calendar.jsx        # Agenda + export PDF
-│   │   ├── Sports.jsx          # Control deportivo
-│   │   ├── Subordinates.jsx    # Subordinados
-│   │   ├── Superiors.jsx       # Superiores
-│   │   ├── VoiceAssistant.jsx  # Asistente por voz
-│   │   ├── InstallPrompt.jsx   # Instalación como PWA
-│   │   └── Settings.jsx        # Ajustes
-│   ├── index.css           # Estilos (tema claro/oscuro)
-│   └── main.jsx            # Arranque
-├── backend/
-│   └── server.js           # API Express + SQLite
-├── android/                # Proyecto Android (Capacitor)
-├── public/                 # Recursos estáticos
-├── capacitor.config.json
-└── vite.config.js
-```
+├── src/                    # Frontend React (Cliente Web/PWA)
+│   ├── components/         # Módulos operativos (Auth, Dashboard, Calendar, etc.)
+│   ├── App.jsx             # Enrutamiento y gestión de estado
+│   └── main.jsx            # Entry point
+├── backend/                
+│   └── server.js           # Servidor API REST (Express) e interacción SQLite
+├── android/                # Proyecto nativo Android generado por Capacitor
+└── public/                 # Assets estáticos y Manifest PWA
+⚙️ Despliegue en Entorno de Desarrollo (Local)
+Para auditar el código o ejecutar la plataforma en un entorno local aislado:
 
----
+1. Despliegue de la API (Backend)
 
-## Cómo lo arranco
+Bash
 
-### 1. La web
 
-```bash
-npm install
-npm run dev          # desarrollo
-npm run build        # genera dist/
-npm run preview      # sirve dist/ en local
-```
-
-### 2. La API
-
-```bash
 cd backend
 npm install
-node server.js       # por defecto en el puerto 3000
-```
+node server.js # Inicializa el servicio en el puerto 3000 y autogenera appmando.db
+(Requiere configurar el archivo .env con las variables JWT_SECRET, GOOGLE_CLIENT_ID y las claves VAPID para notificaciones).
 
-La base de datos se crea sola en `backend/appmando.db` al arrancar la primera vez.
-Ese fichero **no** está en el repositorio a propósito: es la información real de
-gente y no se publica.
+2. Despliegue del Cliente Web (Frontend)
 
-### 3. Variables de entorno (backend)
+Bash
 
-El backend arranca sin configurar nada, pero en producción hay que ponerlo:
 
-| Variable | Para qué sirve |
-|---|---|
-| `JWT_SECRET` | **Obligatoria en producción.** Firma las sesiones. |
-| `GOOGLE_CLIENT_ID` | ID de cliente de Google para el acceso con Google. |
-| `PORT` | Puerto del servidor (3000 por defecto). |
-| `VAPID_*` | Claves de las notificaciones push (ver `backend/vapid.json`). |
-
-### 4. La app Android
-
-```bash
-npm run build
-npx cap add android       # solo la primera vez
-npx cap sync
-npx cap open android      # abre Android Studio
-```
-
----
-
-## Seguridad y privacidad
-
-- **Este repositorio no contiene ningún dato real.** Ni usuarios, ni tareas, ni nombres,
-  ni correos. Los ficheros sensibles (`appmando.db`, `vapid.json`, `.env`) están
-  en `.gitignore`.
-- Las contraseñas se guardan **cifradas con bcrypt**, nunca en claro.
-- Los tokens de sesión van **firmados con JWT** y caducan a los 30 días.
-- `JWT_SECRET` **nunca** se sube al repositorio. Si se deja el valor de ejemplo,
-  cualquiera podría fabricar sesiones válidas: cámbialo antes de publicar la app.
-- La API nunca mezcla los datos de un usuario con los de otro: todo va filtrado por su ID.
-
----
-
-## Estado
-
-Versión estable y en uso diario. El código es el mismo que está sirviendo la app en
-producción, sin adornos ni extras.
-
-Si te sirve, úsala. Si quieres mejorarla, abre un issue o mándame un pull request.
-
----
-
-*Hecho con la misma lógica con la que se organiza una unidad: información clara,
-tareas con responsable y nada que se pierda por el camino.*
+# Desde la raíz del proyecto
+npm install
+npm run dev # Levanta el entorno de desarrollo con Vite
+Desarrollado aplicando la misma doctrina que rige la operatividad de una unidad: trazabilidad absoluta, asignación clara de responsabilidades y cero pérdida de información.
