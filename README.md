@@ -1,6 +1,6 @@
 # AppMando: Sistema Centralizado de Gestión Táctica y Operativa
 
-![AppMando Preview](link-a-tu-captura-de-pantalla-aqui.png)
+![AppMando Preview](appmando.jpeg)
 *Acceso a la plataforma web: [app.promilitar.es](https://app.promilitar.es)*
 
 ## 🎯 Contexto Operativo (El Problema y la Solución)
