@@ -1,0 +1,17 @@
+{
+  "name": "AppMando",
+  "short_name": "AppMando",
+  "description": "Gestión táctica militar",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f6f4",
+  "theme_color": "#3d4a36",
+  "icons": [
+    {
+      "src": "/logo-icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AppMando</string>
+    <string name="title_activity_main">AppMando</string>
+    <string name="package_name">com.appmando.app</string>
+    <string name="custom_url_scheme">com.appmando.app</string>
+</resources>

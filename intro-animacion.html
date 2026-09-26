@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AppMando - Intro Animada</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f5f6f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .shield {
+      width: 120px;
+      height: 140px;
+      background: #3d4a36; /* Verde militar */
+      clip-path: polygon(50% 0%, 100% 20%, 100% 70%, 50% 100%, 0% 70%, 0% 20%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(50px) scale(0.5);
+      position: relative;
+      box-shadow: 0 10px 30px rgba(61, 74, 54, 0.4);
+    }
+
+    .shield-inner {
+      width: 90px;
+      height: 110px;
+      background: #52634a;
+      clip-path: polygon(50% 0%, 100% 20%, 100% 70%, 50% 100%, 0% 70%, 0% 20%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .star {
+      color: #e5b916;
+      font-size: 40px;
+    }
+
+    .title {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #1f241d;
+      margin-top: 24px;
+      letter-spacing: -1px;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+      overflow: hidden;
+    }
+
+    .title span {
+      display: inline-block;
+      transform: translateY(100%);
+      opacity: 0;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #6e756b;
+      margin-top: 8px;
+      font-weight: 500;
+      opacity: 0;
+    }
+
+    .accent-line {
+      width: 0;
+      height: 4px;
+      background-color: #4a753c;
+      margin-top: 16px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="shield">
+      <div class="shield-inner">
+        <div class="star">★</div>
+      </div>
+    </div>
+    
+    <div class="title">
+      <span class="char">A</span><span class="char">p</span><span class="char">p</span><span class="char">M</span><span class="char">a</span><span class="char">n</span><span class="char">d</span><span class="char">o</span>
+    </div>
+    
+    <div class="subtitle">Gestión Táctica Militar</div>
+    <div class="accent-line"></div>
+  </div>
+
+  <script>
+    // GSAP Animation Timeline
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+    // 1. Escudo entra rebotando
+    tl.to(".shield", {
+      y: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 1.2,
+      ease: "elastic.out(1, 0.5)"
+    });
+
+    // 2. Letras del título aparecen subiendo
+    tl.to(".title span", {
+      y: 0,
+      opacity: 1,
+      duration: 0.6,
+      stagger: 0.05
+    }, "-=0.8");
+
+    // 3. Línea de acento se expande
+    tl.to(".accent-line", {
+      width: "150px",
+      duration: 0.8
+    }, "-=0.4");
+
+    // 4. Subtítulo aparece suavemente
+    tl.to(".subtitle", {
+      opacity: 1,
+      y: -5,
+      duration: 0.8
+    }, "-=0.6");
+
+    // 5. Pequeño resplandor en la estrella
+    tl.to(".star", {
+      scale: 1.2,
+      duration: 0.3,
+      yoyo: true,
+      repeat: 1,
+      ease: "power1.inOut"
+    }, "-=0.2");
+
+  </script>
+</body>
+</html>

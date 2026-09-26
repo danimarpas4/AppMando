@@ -1,0 +1,8 @@
+{
+  "appId": "com.appmando.app",
+  "appName": "AppMando",
+  "webDir": "dist",
+  "server": {
+    "cleartext": true
+  }
+}

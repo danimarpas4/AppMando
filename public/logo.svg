@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="100%" height="100%">
+  <!-- Icono cuadrado redondeado en verde táctico girado a la derecha -->
+  <rect x="25" y="25" width="75" height="75" rx="18" fill="#4a753c" transform="rotate(4 62 62)" />
+  
+  <!-- Texto MANDO -->
+  <text x="120" y="72" font-family="'Sora', sans-serif" font-size="62" font-weight="800" fill="#ffffff" letter-spacing="-2">MANDO</text>
+  
+  <!-- Texto APP -->
+  <text x="125" y="98" font-family="'Sora', sans-serif" font-size="18" font-weight="700" fill="#a39d82" letter-spacing="12">APP</text>
+</svg>
