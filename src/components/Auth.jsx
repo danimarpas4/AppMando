@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
-const GOOGLE_CLIENT_ID = '78912345678-placeholder.apps.googleusercontent.com';
+// Client ID del cliente OAuth de Google. No es un secreto (via incrustado en la
+// web igualmente) y solo se usa para pedir el token de acceso; el backend nunca
+// necesita el client secret para validarlo.
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '1013787350092-sfeob60asku5nujcv4rc0ukcv3kj5mof.apps.googleusercontent.com';
 
 export default function Auth({ onAuthSuccess }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -98,8 +101,7 @@ export default function Auth({ onAuthSuccess }) {
           <div style={{display: 'flex', justifyContent: 'center'}}>
             <GoogleLogin
               onSuccess={handleGoogleSuccess}
-              onError={() => setError('Google Login falló. (Requiere Client ID real en el VPS)')}
-              useOneTap
+              onError={() => setError('No se pudo conectar con Google. Revisa la conexión e inténtalo de nuevo.')}
               theme="filled_black"
               shape="pill"
             />
